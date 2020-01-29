@@ -1,0 +1,14 @@
+Player Name: Pierce          Wins: 0               Losses: 1               Draws: 0
+
+Player Name: Pierce          Wins: 1               Losses: 1               Draws: 0
+
+Player Name: Pierce          Wins: 2               Losses: 1               Draws: 0
+
+Player Name: Pierce          Wins: 2               Losses: 2               Draws: 0
+
+Player Name: Pierce          Wins: 2               Losses: 3               Draws: 0
+
+Player Name: Pierce          Wins: 2               Losses: 4               Draws: 0
+
+Player Name: Pierce          Wins: 2               Losses: 5               Draws: 0
+
