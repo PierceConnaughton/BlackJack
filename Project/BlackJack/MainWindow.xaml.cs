@@ -27,7 +27,6 @@ namespace BlackJack
         //properties for player's Card number and the dealer's card nu8mber
         int playerNum = 0;
         int dealerNum = 0;
-        
 
         string dealerNumString;
         string playerNumString;
@@ -40,6 +39,7 @@ namespace BlackJack
         bool gameInProgress = false;
         bool playerReturned = false;
         bool gameStarted = false;
+        bool playerFound = false;
 
         
 
@@ -48,9 +48,38 @@ namespace BlackJack
             InitializeComponent();
         }
 
+        //end game button clicked button
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (gameStarted == false)
+            {
+                //message too show records being saved
+                MessageBox.Show("Saving too records");
 
+                //foreach player in the list save their record too a list
+                foreach (Player newPlayer in players)
+                {
+
+
+                    FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
+
+                    
+                    StreamWriter sw = new StreamWriter(fs);
+
+                    sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws);
+
+                    sw.WriteLine("");
+
+                    sw.Close();
+
+                }
+                MainWindow1.Close();
+            }
+            else
+            {
+                MessageBox.Show("Finish game before finishing");
+            }
+            
         }
 
         //if start button clicked
@@ -69,6 +98,7 @@ namespace BlackJack
                     //else start the game thus turing the game started bool too true
                     gameStarted = true;
 
+                    playerFound = false;
                     //get random cards between 2 and 21
                     int firstCard = rnd.Next(1, 11);
                     int secondCard = rnd.Next(1, 12);
@@ -115,6 +145,7 @@ namespace BlackJack
                                 txtBlCurrentPlayer.Text = returningPlayer.PlayerName;
                             }
                         }
+                        
                         //get whats turned into the txt box turn it into a string
                         string x = txtBxEnterName.Text;
 
@@ -123,10 +154,11 @@ namespace BlackJack
                         //compare the string too the list and see which matches
                         foreach (Player currentPlayer in players)
                         {
-
+                            
                             //if the string matches the players name
                             if (x == currentPlayer.PlayerName)
                             {
+                                
                                 //if the player num is equal too 21 they win
                                 if (playerNum == 21)
                                 {
@@ -136,9 +168,11 @@ namespace BlackJack
                                 }
                             }
                         }
+                        
                     }
                     else
                     {
+                        
                         txtBlWin.Text = "0";
                         txtBlLosses.Text = "0";
                         txtBlDraws.Text = "0";
@@ -194,6 +228,7 @@ namespace BlackJack
         //on window load
         private void MainWindow1_Loaded(object sender, RoutedEventArgs e)
         {
+            //when the main window is loaded set all the values too default
             txtBlCurrentPlayer.Text = "Unknown";
             txtBlDealerTotal.Text = "0";
             txtBlDraws.Text = "0";
@@ -209,26 +244,37 @@ namespace BlackJack
             //if game has been restarted and the game has been started
             if (gameRestarted == true && gameInProgress == false && gameStarted == true)
             {
+                //name has to be entred to use this button
                 if (String.IsNullOrEmpty(txtBxEnterName.Text))
                 {
                     MessageBox.Show("Enter Name First");
                 }
                 else
                 {
+                    //set player found too false
+
+                    playerFound = false;
+                    //get the name in the textbox
                     string x = txtBxEnterName.Text;
 
+                    //check in the list if that name matches with the player that is playing
                     foreach (Player newPlayer in players)
                     {
 
 
                         if (newPlayer.PlayerName == x)
                         {
+                            //if player found set too true
+                            playerFound = true;
+
+                            //get random card between 1 and 10 and add it too your total
                             int hit = rnd.Next(1, 11);
 
                             playerNum = playerNum + hit;
 
                             txtBlPlayerTotal.Text = playerNum.ToString();
 
+                            //if player gets more then 21 they lose or if player gets exactly 21 they win
                             if (playerNum > 21)
                             {
                                 Loss();
@@ -241,8 +287,11 @@ namespace BlackJack
                             }
                         }
 
-
-
+                    }
+                    //if player cant be found as the same player in the txtbx get a warning
+                    if (playerFound == false)
+                    {
+                        MessageBox.Show("Player changed, please press start");
 
                     }
 
@@ -250,14 +299,10 @@ namespace BlackJack
             }
             else
             {
-                if (String.IsNullOrEmpty(txtBxEnterName.Text))
-                {
-                    MessageBox.Show("Enter Name First");
-                }
-                else
-                {
+                //warning too restart the game
+              
                     MessageBox.Show("Press Restart and then press start game");
-                }
+                
             }
         
 
@@ -272,6 +317,7 @@ namespace BlackJack
         {
             if (gameRestarted == true && gameStarted == true)
             {
+                
                 if (String.IsNullOrEmpty(txtBxEnterName.Text))
                 {
                     MessageBox.Show("Enter Name First");
@@ -280,6 +326,8 @@ namespace BlackJack
 
                 else
                 {
+                    playerFound = false;
+
                     string x = txtBxEnterName.Text;
 
                     foreach (Player newPlayer in players)
@@ -288,10 +336,16 @@ namespace BlackJack
 
                         if (newPlayer.PlayerName == x)
                         {
+                            playerFound = true;
 
+                            //go too dealer method
                             Dealer();
 
                         }
+                    }
+                    if (playerFound == false)
+                    {
+                        MessageBox.Show("Player changed, please press start");
                     }
                 }
             }
@@ -302,7 +356,7 @@ namespace BlackJack
             }
         }
             
-
+        //Method if you lost
         public void Loss()
         {
             string x = txtBxEnterName.Text;
@@ -327,6 +381,7 @@ namespace BlackJack
 
         }
 
+        //Method if you won
         public void Win()
         {
             string x = txtBxEnterName.Text;
@@ -350,6 +405,7 @@ namespace BlackJack
 
         }
 
+        //method if you drew
         public void Draw()
         {
             string x = txtBxEnterName.Text;
@@ -373,46 +429,27 @@ namespace BlackJack
 
         }
 
+        //refreshes the records after a game
         public void RefreshRecords()
         {
-            
-
-            string x = txtBxEnterName.Text;
-
-            foreach (Player newPlayer in players)
-            {
-
-                if (newPlayer.PlayerName == x)
-                {
-                    FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
-
-                    StreamWriter sw = new StreamWriter(fs);
-
-                    sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws);
-
-                    sw.WriteLine("");
-
-                    sw.Close();
-
-
-                }
 
                 lstBxRecords.ItemsSource = null;
                 lstBxRecords.ItemsSource = players;
-                return;
-            }
-
-           
+                
         }
 
+        //restarts game when clicked
         private void btnRestart_Click(object sender, RoutedEventArgs e)
         {
+            //Activates restart method
             Restart();
 
         }
 
+        //restarts game
         public void Restart()
         {
+            //set all the values too default
             gameRestarted = true;
             gameStarted = false;
             playerReturned = false;
@@ -426,6 +463,7 @@ namespace BlackJack
             txtBlPlayerTotal.Text = "0";
         }
 
+        //When double down is clicked
         private void btnDoubleDown_Click(object sender, RoutedEventArgs e)
         {
             if (gameRestarted == true && gameStarted == true)
@@ -436,6 +474,7 @@ namespace BlackJack
                 }
                 else
                 {
+                    playerFound = false;
                     string x = txtBxEnterName.Text;
 
                     foreach (Player newPlayer in players)
@@ -444,6 +483,7 @@ namespace BlackJack
 
                         if (newPlayer.PlayerName == x)
                         {
+                            playerFound = true;
                             int doubleDown = rnd.Next(1, 11);
 
                             playerNum = playerNum + doubleDown;
@@ -467,60 +507,76 @@ namespace BlackJack
                         }
 
                     }
+                    if (playerFound == false)
+                    {
+                        MessageBox.Show("Player changed, please press start");
+                    }
                 }
 
             }
             else
             {
+                
                 MessageBox.Show("Restart Game and press Start");
             }
         }
 
+        //Method for when it's the dealers turn
         public void Dealer()
         {
+            //get dealers second card
             int dealerCard = rnd.Next(1, 11);
 
+            //get dealer total and display it
             dealerNum = dealerNum + dealerCard;
 
             dealerNumString = dealerNum.ToString();
             txtBlDealerTotal.Text = dealerNumString;
 
-
+            //if dealer has exactly 21 you lose
             if (dealerNum == 21)
             {
                 Loss();
                 return;
             }
 
-
-            else if (dealerNum <= 21)
+            //if dealer's number is below 21
+            else if (dealerNum < 21)
             {
+                //go through loop 10 times
                 for (int i = 0; i < 10; i++)
                 {
+                    //if dealer number more then player number and dealer number less then or equal to 21 you lose
                     if (dealerNum > playerNum && dealerNum <= 21)
                     {
                         Loss();
                         return;
                     }
 
+                    //if dealer number below 21 and also below the player's number
                     else if (dealerNum <= 21 && dealerNum < playerNum)
                     {
+                        //give dealer a new card and add it too total
                         int newCard = rnd.Next(1, 11);
+
                         dealerNum = dealerNum + newCard;
 
                         dealerNumString = dealerNum.ToString();
                         txtBlDealerTotal.Text = dealerNumString;
 
+                        //if dealer number = too 21 and equal too player number it's a draw
                         if (dealerNum == 21 && dealerNum == playerNum)
                         {
                             Draw();
                             return;
                         }
+                        //if dealer number = to 21 and more then player number you lose
                         else if (dealerNum == 21 && dealerNum > playerNum)
                         {
                             Loss();
                             return;
                         }
+                        //if dealer number more then 21 you win
                         else if (dealerNum > 21)
                         {
                             Win();
@@ -528,19 +584,28 @@ namespace BlackJack
                         }
                     }
 
+                    //if dealer number less than = 21 and less then player num 
                     else if (dealerNum <= 21 && dealerNum < playerNum)
                     {
                         Win();
                         return;
                     }
+                    //if dealer number == player number its a draw
                     else if (dealerNum == playerNum)
                     {
                         Draw();
                         return;
                     }
-                    else if (dealerNum >= 21)
+                    //else if dealer num is more than player num
+                    else if (dealerNum > playerNum)
                     {
                         Loss();
+                        return;
+                    }
+                    //if dealer number is more than 21
+                    else if (dealerNum > 21)
+                    {
+                        Win();
                         return;
                     }
                 }
