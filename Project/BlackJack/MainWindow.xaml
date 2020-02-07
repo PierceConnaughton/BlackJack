@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="btnStart" Content="Start Game" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,83,0,0" Click="btnStart_Click"/>
         <Button x:Name="btnHitMe" Content="Hit Me" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,131,0,0" Click="btnHitMe_Click"/>
-        <Button x:Name="btnDoubleDown" Content="Double Down" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,176,0,0"/>
+        <Button x:Name="btnDoubleDown" Content="Double Down" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,176,0,0" Click="btnDoubleDown_Click"/>
         <Button x:Name="btnFold" Content="Fold" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,227,0,0" Click="btnFold_Click"/>
         <Button x:Name="btnRestart" Content="Restart " HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,274,0,0" Click="btnRestart_Click"/>
         <Button x:Name="btnEndGame" Content="End Game" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,323,0,0" Click="Button_Click"/>

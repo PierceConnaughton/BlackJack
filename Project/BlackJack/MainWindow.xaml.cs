@@ -139,6 +139,9 @@ namespace BlackJack
                     }
                     else
                     {
+                        txtBlWin.Text = "0";
+                        txtBlLosses.Text = "0";
+                        txtBlDraws.Text = "0";
                         //if player is not a returning player create a new player
                         Player newPlayer = new Player();
 
@@ -285,77 +288,9 @@ namespace BlackJack
 
                         if (newPlayer.PlayerName == x)
                         {
-                            int dealerCard = rnd.Next(1, 11);
 
-                            dealerNum = dealerNum + dealerCard;
+                            Dealer();
 
-                            dealerNumString = dealerNum.ToString();
-                            txtBlDealerTotal.Text = dealerNumString;
-
-
-                            if (dealerNum == 21)
-                            {
-                                Loss();
-                                return;
-                            }
-                            
-
-                            else if (dealerNum <= 21)
-                            {
-                                for (int i = 0; i < 10; i++)
-                                {
-                                    if (dealerNum > playerNum && dealerNum <= 21)
-                                    {
-                                        Loss();
-                                        return;
-                                    }
-
-                                    else if (dealerNum <= 21 && dealerNum < playerNum)
-                                    {
-                                        int newCard = rnd.Next(1, 11);
-                                        dealerNum = dealerNum + newCard;
-
-                                        dealerNumString = dealerNum.ToString();
-                                        txtBlDealerTotal.Text = dealerNumString;
-
-                                        if (dealerNum == 21 && dealerNum == playerNum)
-                                        {
-                                            Draw();
-                                            return;
-                                        }
-                                        else if (dealerNum == 21 && dealerNum > playerNum)
-                                        {
-                                            Loss();
-                                            return;
-                                        }
-                                        else if (dealerNum > 21)
-                                        {
-                                            Win();
-                                            return;
-                                        }
-                                    }
-
-                                    else if (dealerNum <= 21 && dealerNum < playerNum)
-                                    {
-                                        Win();
-                                        return;
-                                    }
-                                    else if (dealerNum == playerNum)
-                                    {
-                                        Draw();
-                                        return;
-                                    }
-                                    else if (dealerNum >= 21)
-                                    {
-                                        Loss();
-                                        return;
-                                    }
-                                }
-
-
-                            }
-
-                           
                         }
                     }
                 }
@@ -407,7 +342,7 @@ namespace BlackJack
                     MessageBox.Show("You won. You won " + newPlayer.Wins + " games");
                     RefreshRecords();
                     Restart();
-                    txtBlDraws.Text = newPlayer.Wins.ToString();
+                    txtBlWin.Text = newPlayer.Wins.ToString();
                     return;
                 }
                
@@ -431,6 +366,7 @@ namespace BlackJack
                     Restart();
                     txtBlDraws.Text = newPlayer.Draws.ToString();
                     return;
+                    
                 }
                 
             }
@@ -471,16 +407,7 @@ namespace BlackJack
 
         private void btnRestart_Click(object sender, RoutedEventArgs e)
         {
-            gameRestarted = true;
-            gameStarted = false;
-            playerReturned = false;
-
-            playerNum = 0;
-            dealerNum = 0;
-
-            
-            txtBlDealerTotal.Text = "0";
-            txtBlPlayerTotal.Text = "0";
+            Restart();
 
         }
 
@@ -493,9 +420,133 @@ namespace BlackJack
             playerNum = 0;
             dealerNum = 0;
 
+            
 
             txtBlDealerTotal.Text = "0";
             txtBlPlayerTotal.Text = "0";
+        }
+
+        private void btnDoubleDown_Click(object sender, RoutedEventArgs e)
+        {
+            if (gameRestarted == true && gameStarted == true)
+            {
+                if (String.IsNullOrEmpty(txtBxEnterName.Text))
+                {
+                    MessageBox.Show("Enter Name First");
+                }
+                else
+                {
+                    string x = txtBxEnterName.Text;
+
+                    foreach (Player newPlayer in players)
+                    {
+
+
+                        if (newPlayer.PlayerName == x)
+                        {
+                            int doubleDown = rnd.Next(1, 11);
+
+                            playerNum = playerNum + doubleDown;
+
+                            txtBlPlayerTotal.Text = playerNum.ToString();
+
+                            if (playerNum > 21)
+                            {
+                                Loss();
+                                return;
+                            }
+                            else if (playerNum == 21)
+                            {
+                                Win();
+                                return;
+                            }
+                            else
+                            {
+                                Dealer();
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Restart Game and press Start");
+            }
+        }
+
+        public void Dealer()
+        {
+            int dealerCard = rnd.Next(1, 11);
+
+            dealerNum = dealerNum + dealerCard;
+
+            dealerNumString = dealerNum.ToString();
+            txtBlDealerTotal.Text = dealerNumString;
+
+
+            if (dealerNum == 21)
+            {
+                Loss();
+                return;
+            }
+
+
+            else if (dealerNum <= 21)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    if (dealerNum > playerNum && dealerNum <= 21)
+                    {
+                        Loss();
+                        return;
+                    }
+
+                    else if (dealerNum <= 21 && dealerNum < playerNum)
+                    {
+                        int newCard = rnd.Next(1, 11);
+                        dealerNum = dealerNum + newCard;
+
+                        dealerNumString = dealerNum.ToString();
+                        txtBlDealerTotal.Text = dealerNumString;
+
+                        if (dealerNum == 21 && dealerNum == playerNum)
+                        {
+                            Draw();
+                            return;
+                        }
+                        else if (dealerNum == 21 && dealerNum > playerNum)
+                        {
+                            Loss();
+                            return;
+                        }
+                        else if (dealerNum > 21)
+                        {
+                            Win();
+                            return;
+                        }
+                    }
+
+                    else if (dealerNum <= 21 && dealerNum < playerNum)
+                    {
+                        Win();
+                        return;
+                    }
+                    else if (dealerNum == playerNum)
+                    {
+                        Draw();
+                        return;
+                    }
+                    else if (dealerNum >= 21)
+                    {
+                        Loss();
+                        return;
+                    }
+                }
+
+
+            }
         }
     }
 }

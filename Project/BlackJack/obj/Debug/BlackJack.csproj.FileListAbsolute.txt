@@ -10,6 +10,5 @@ H:\Year Two\Semester 4\Programming\Project\BlackJack\obj\Debug\MainWindow.baml
 H:\Year Two\Semester 4\Programming\Project\BlackJack\obj\Debug\BlackJack.g.resources
 H:\Year Two\Semester 4\Programming\Project\BlackJack\obj\Debug\BlackJack.Properties.Resources.resources
 H:\Year Two\Semester 4\Programming\Project\BlackJack\obj\Debug\BlackJack.csproj.GenerateResource.cache
-H:\Year Two\Semester 4\Programming\Project\BlackJack\obj\Debug\BlackJack.csproj.CoreCompileInputs.cache
 H:\Year Two\Semester 4\Programming\Project\BlackJack\obj\Debug\BlackJack.exe
 H:\Year Two\Semester 4\Programming\Project\BlackJack\obj\Debug\BlackJack.pdb
