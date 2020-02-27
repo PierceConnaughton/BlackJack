@@ -31,6 +31,8 @@ namespace BlackJack
         string dealerNumString;
         string playerNumString;
 
+        
+
         //list of all the current players
         List<Player> players = new List<Player>();
 
@@ -40,8 +42,12 @@ namespace BlackJack
         bool playerReturned = false;
         bool gameStarted = false;
         bool playerFound = false;
+        bool playerInFile = false;
+        bool ifHit = false;
 
-        
+
+
+
 
         public MainWindow()
         {
@@ -54,32 +60,59 @@ namespace BlackJack
             if (gameStarted == false)
             {
                 //message too show records being saved
-                MessageBox.Show("Saving too records");
+                MessageBox.Show("Saving too records file");
 
                 //foreach player in the list save their record too a list
                 foreach (Player newPlayer in players)
                 {
+                    //playerInFile = false;
 
 
+
+                    //foreach (Player player in players)
+                    //{
+                    //    if (newPlayer.PlayerName == player.PlayerName)
+                    //    {
+                    //        FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt", FileMode.Create, FileAccess.Write);
+
+
+                    //        StreamWriter sw = new StreamWriter(fs);
+
+                    //        sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws);
+                    //        playerInFile = true;
+                    //        sw.Close();
+
+                    //        return;
+
+                    //    }
+
+                    //}
+
+                    //if (playerInFile == false)
+                    //{
                     FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
 
-                    
+
                     StreamWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws);
+                    sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3,-15} Date Last time player played: {4}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws,newPlayer.DateOfLastGame);
 
                     sw.WriteLine("");
 
                     sw.Close();
+                    //}
+
+
 
                 }
+                ReadFile();
                 MainWindow1.Close();
             }
             else
             {
                 MessageBox.Show("Finish game before finishing");
             }
-            
+
         }
 
         //if start button clicked
@@ -145,7 +178,7 @@ namespace BlackJack
                                 txtBlCurrentPlayer.Text = returningPlayer.PlayerName;
                             }
                         }
-                        
+
                         //get whats turned into the txt box turn it into a string
                         string x = txtBxEnterName.Text;
 
@@ -154,11 +187,11 @@ namespace BlackJack
                         //compare the string too the list and see which matches
                         foreach (Player currentPlayer in players)
                         {
-                            
+
                             //if the string matches the players name
                             if (x == currentPlayer.PlayerName)
                             {
-                                
+
                                 //if the player num is equal too 21 they win
                                 if (playerNum == 21)
                                 {
@@ -168,11 +201,11 @@ namespace BlackJack
                                 }
                             }
                         }
-                        
+
                     }
                     else
                     {
-                        
+
                         txtBlWin.Text = "0";
                         txtBlLosses.Text = "0";
                         txtBlDraws.Text = "0";
@@ -186,7 +219,7 @@ namespace BlackJack
 
                         txtBlCurrentPlayer.Text = newPlayer.PlayerName;
 
-                       
+
 
                         string x = txtBxEnterName.Text;
 
@@ -206,11 +239,11 @@ namespace BlackJack
                             }
                         }
                     }
-                    
 
 
-                    
-                       
+
+
+
 
                 }
             }
@@ -220,10 +253,10 @@ namespace BlackJack
             {
                 MessageBox.Show("Restart Game and press start");
             }
-                
-            
 
-            
+
+
+
         }
         //on window load
         private void MainWindow1_Loaded(object sender, RoutedEventArgs e)
@@ -267,6 +300,7 @@ namespace BlackJack
                             //if player found set too true
                             playerFound = true;
 
+                            ifHit = true;
                             //get random card between 1 and 10 and add it too your total
                             int hit = rnd.Next(1, 11);
 
@@ -300,13 +334,13 @@ namespace BlackJack
             else
             {
                 //warning too restart the game
-              
-                    MessageBox.Show("Press Restart and then press start game");
-                
-            }
-        
 
-            
+                MessageBox.Show("Press Restart and then press start game");
+
+            }
+
+
+
 
 
 
@@ -317,7 +351,7 @@ namespace BlackJack
         {
             if (gameRestarted == true && gameStarted == true)
             {
-                
+
                 if (String.IsNullOrEmpty(txtBxEnterName.Text))
                 {
                     MessageBox.Show("Enter Name First");
@@ -332,7 +366,7 @@ namespace BlackJack
 
                     foreach (Player newPlayer in players)
                     {
-                        
+
 
                         if (newPlayer.PlayerName == x)
                         {
@@ -355,7 +389,7 @@ namespace BlackJack
                 MessageBox.Show("Restart Game and press Start");
             }
         }
-            
+
         //Method if you lost
         public void Loss()
         {
@@ -367,15 +401,17 @@ namespace BlackJack
 
                 if (newPlayer.PlayerName == x)
                 {
+                    newPlayer.DateOfLastGame = DateTime.Now.ToString("MM/dd/yyyy H:mm");
                     gameInProgress = true;
                     newPlayer.Losses++;
                     MessageBox.Show("You Lose. You lost " + newPlayer.Losses + " games");
+                    //players.Sort();
                     RefreshRecords();
                     Restart();
                     txtBlLosses.Text = newPlayer.Losses.ToString();
                     return;
                 }
-               
+
             }
 
 
@@ -388,19 +424,21 @@ namespace BlackJack
 
             foreach (Player newPlayer in players)
             {
-                
+
 
                 if (newPlayer.PlayerName == x)
                 {
+                    newPlayer.DateOfLastGame = DateTime.Now.ToString("MM/dd/yyyy H:mm");
                     gameInProgress = true;
                     newPlayer.Wins++;
                     MessageBox.Show("You won. You won " + newPlayer.Wins + " games");
+                    //players.Sort();
                     RefreshRecords();
                     Restart();
                     txtBlWin.Text = newPlayer.Wins.ToString();
                     return;
                 }
-               
+
             }
 
         }
@@ -412,19 +450,21 @@ namespace BlackJack
 
             foreach (Player newPlayer in players)
             {
-                
+
                 if (newPlayer.PlayerName == x)
                 {
+                    newPlayer.DateOfLastGame = DateTime.Now.ToString("MM/dd/yyyy H:mm");
                     gameInProgress = true;
                     newPlayer.Draws++;
                     MessageBox.Show("You Draw. You drew " + newPlayer.Draws + " games");
+                    //players.Sort();
                     RefreshRecords();
                     Restart();
-                    txtBlDraws.Text = newPlayer.Draws.ToString();
+                    txtBlDraws.Text = newPlayer.Draws.ToString();   
                     return;
-                    
+
                 }
-                
+
             }
 
         }
@@ -433,9 +473,11 @@ namespace BlackJack
         public void RefreshRecords()
         {
 
-                lstBxRecords.ItemsSource = null;
-                lstBxRecords.ItemsSource = players;
-                
+            lstBxRecords.ItemsSource = null;
+
+           
+            lstBxRecords.ItemsSource = players;
+
         }
 
         //restarts game when clicked
@@ -453,11 +495,12 @@ namespace BlackJack
             gameRestarted = true;
             gameStarted = false;
             playerReturned = false;
+            ifHit = false;
 
             playerNum = 0;
             dealerNum = 0;
 
-            
+
 
             txtBlDealerTotal.Text = "0";
             txtBlPlayerTotal.Text = "0";
@@ -471,6 +514,10 @@ namespace BlackJack
                 if (String.IsNullOrEmpty(txtBxEnterName.Text))
                 {
                     MessageBox.Show("Enter Name First");
+                }
+                else if (ifHit == true)
+                {
+                    MessageBox.Show("Cannot double down after hit was pressed");
                 }
                 else
                 {
@@ -516,7 +563,7 @@ namespace BlackJack
             }
             else
             {
-                
+
                 MessageBox.Show("Restart Game and press Start");
             }
         }
@@ -613,5 +660,16 @@ namespace BlackJack
 
             }
         }
+
+        public void ReadFile()
+        {
+            string text = File.ReadAllText(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt");
+            text = text.Replace(string.Format("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}","Pierce",1,0,0), "new value");
+            File.WriteAllText("test.txt", text);
+        }
+
+        
+
+
     }
 }

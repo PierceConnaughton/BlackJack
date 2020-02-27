@@ -5,18 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BlackJack"
         mc:Ignorable="d"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Title="MainWindow" Height="450" Width="800" Loaded="MainWindow1_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="169*"/>
             <ColumnDefinition Width="623*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnStart" Content="Start Game" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,83,0,0" Click="btnStart_Click"/>
-        <Button x:Name="btnHitMe" Content="Hit Me" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,131,0,0" Click="btnHitMe_Click"/>
-        <Button x:Name="btnDoubleDown" Content="Double Down" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,176,0,0" Click="btnDoubleDown_Click"/>
-        <Button x:Name="btnFold" Content="Fold" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,227,0,0" Click="btnFold_Click"/>
-        <Button x:Name="btnRestart" Content="Restart " HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,274,0,0" Click="btnRestart_Click"/>
-        <Button x:Name="btnEndGame" Content="End Game" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="65,323,0,0" Click="Button_Click"/>
+        <Button x:Name="btnStart" Content="Start Game" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Margin="36,83,0,0" Click="btnStart_Click"/>
+        <Button x:Name="btnHitMe" Content="Hit Me" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Margin="36,131,0,0" Click="btnHitMe_Click"/>
+        <Button x:Name="btnDoubleDown" Content="Double Down" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Margin="36,176,0,0" Click="btnDoubleDown_Click"/>
+        <Button x:Name="btnFold" Content="Fold" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Margin="36,227,0,0" Click="btnFold_Click"/>
+        <Button x:Name="btnRestart" Content="Restart " HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Margin="36,274,0,0" Click="btnRestart_Click"/>
+        <Button x:Name="btnEndGame" Content="End Game" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Margin="36,323,0,0" Click="Button_Click"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Total:" VerticalAlignment="Top" Margin="44,90,0,0" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dealer Total:" VerticalAlignment="Top" Margin="42,138,0,0" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="42,229,0,0" Height="20" Width="93" Grid.Column="1"><Run Text="Number Of "/><Run Text="Wins:"/></TextBlock>
@@ -24,9 +26,9 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Number Of Draws: " VerticalAlignment="Top" Margin="42,330,0,0" Grid.Column="1"/>
         <ListBox x:Name="lstBxRecords" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="271" Margin="292,176,0,0" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Name" VerticalAlignment="Top" Margin="292,138,0,0" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Win" VerticalAlignment="Top" Margin="413,138,0,0" RenderTransformOrigin="-0.109,0.546" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Loss" VerticalAlignment="Top" Margin="461,138,0,0" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Draws" VerticalAlignment="Bottom" Margin="509,0,0,265" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Win" VerticalAlignment="Top" Margin="399,138,0,0" RenderTransformOrigin="-0.109,0.546" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Loss" VerticalAlignment="Top" Margin="452,139,0,0" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Draws" VerticalAlignment="Bottom" Margin="499,0,0,265" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Enter Name:" VerticalAlignment="Top" Margin="65,31,0,0"/>
         <TextBox x:Name="txtBxEnterName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="42,31,0,0" Grid.Column="1"/>
         <TextBlock x:Name="txtBlPlayerTotal" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="128,87,0,0" Grid.Column="1"/>
@@ -37,6 +39,13 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Records" VerticalAlignment="Top" Margin="292,77,0,0" FontSize="22" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Current Player:" VerticalAlignment="Top" Margin="292,31,0,0" Grid.Column="1"/>
         <TextBlock x:Name="txtBlCurrentPlayer" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="385,31,0,0" Grid.Column="1"/>
+        <Button Content="Search For Record" HorizontalAlignment="Left" VerticalAlignment="Top" Width="271" Margin="292,377,0,0" Grid.Column="1"/>
+
 
     </Grid>
+
+
+
 </Window>
+
+    
