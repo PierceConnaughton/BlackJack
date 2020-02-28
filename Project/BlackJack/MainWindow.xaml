@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Title="MainWindow" Height="450" Width="800" Loaded="MainWindow1_Loaded">
+        Title="MainWindow" Height="450" Width="1291.618" Loaded="MainWindow1_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="169*"/>
@@ -24,21 +24,17 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="42,229,0,0" Height="20" Width="93" Grid.Column="1"><Run Text="Number Of "/><Run Text="Wins:"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Number of Losses: " VerticalAlignment="Top" Margin="42,278,0,0" RenderTransformOrigin="0.365,0.555" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Number Of Draws: " VerticalAlignment="Top" Margin="42,330,0,0" Grid.Column="1"/>
-        <ListBox x:Name="lstBxRecords" HorizontalAlignment="Left" Height="167" VerticalAlignment="Top" Width="271" Margin="292,176,0,0" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Name" VerticalAlignment="Top" Margin="292,138,0,0" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Win" VerticalAlignment="Top" Margin="399,138,0,0" RenderTransformOrigin="-0.109,0.546" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Loss" VerticalAlignment="Top" Margin="452,139,0,0" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Draws" VerticalAlignment="Bottom" Margin="499,0,0,265" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Enter Name:" VerticalAlignment="Top" Margin="65,31,0,0"/>
-        <TextBox x:Name="txtBxEnterName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="42,31,0,0" Grid.Column="1"/>
+        <ListBox x:Name="lstBxRecords" HorizontalAlignment="Left" Height="256" VerticalAlignment="Top" Width="661" Margin="292,90,0,0" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Enter Name:" VerticalAlignment="Top" Margin="36,41,0,0"/>
+        <TextBox x:Name="txtBxEnterName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="154,34,0,0"/>
         <TextBlock x:Name="txtBlPlayerTotal" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="128,87,0,0" Grid.Column="1"/>
         <TextBlock x:Name="txtBlDealerTotal" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="128,138,0,0" Grid.Column="1"/>
         <TextBlock x:Name="txtBlWin" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="156,227,0,0" Grid.Column="1"/>
         <TextBlock x:Name="txtBlLosses" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="156,276,0,0" Grid.Column="1"/>
         <TextBlock x:Name="txtBlDraws" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="156,333,0,0" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Records" VerticalAlignment="Top" Margin="292,77,0,0" FontSize="22" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Current Player:" VerticalAlignment="Top" Margin="292,31,0,0" Grid.Column="1"/>
-        <TextBlock x:Name="txtBlCurrentPlayer" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="385,31,0,0" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Records" VerticalAlignment="Top" Margin="292,35,0,0" FontSize="22" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Current Player:" VerticalAlignment="Top" Margin="42,34,0,0" Grid.Column="1"/>
+        <TextBlock x:Name="txtBlCurrentPlayer" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="128,34,0,0" Grid.Column="1"/>
         <Button x:Name="btnSearchForRecord" Content="Search For Record" HorizontalAlignment="Left" VerticalAlignment="Top" Width="271" Margin="292,377,0,0" Grid.Column="1" Click="btnSearchForRecord_Click"/>
 
 

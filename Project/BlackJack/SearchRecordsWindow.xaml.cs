@@ -20,7 +20,7 @@ namespace BlackJack
     /// </summary>
     public partial class SearchRecordsWindow : Window
     {
-        List<Player> Allplayers = new List<Player>();
+        List<string> allPlayers = new List<string>();
 
         public SearchRecordsWindow()
         {
@@ -29,11 +29,12 @@ namespace BlackJack
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-        
-            //H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt"
+
+            //H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt
+            //D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt
 
             //when the search window is loaded
-            FileStream fs = new FileStream(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
+            FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
 
             StreamReader sr = new StreamReader(fs);
 
@@ -73,6 +74,7 @@ namespace BlackJack
                     break;
                 }
                 
+                
 
             }
             if (found == false)
@@ -92,7 +94,50 @@ namespace BlackJack
         {
             
 
+        }
 
+        private void btnHome_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow Window1 = new MainWindow();
+            Window1.Show();
+
+            SearchRecordsWindow Window2 = new SearchRecordsWindow();
+            Window2.Close();
+        }
+
+        private void SearchRecordsWindow1_Loaded(object sender, RoutedEventArgs e)
+        {
+            FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
+
+            StreamReader sr = new StreamReader(fs);
+
+            string[] lines = new string[100];
+
+            string lineIn = sr.ReadLine();
+
+            for (int i = 0; i < 100; i++)
+            {
+                lines[i] = lineIn;
+
+                
+                lineIn = sr.ReadLine();
+            }
+
+
+
+            foreach (string player in lines)
+            {
+                allPlayers.Add(player);
+            }
+
+
+
+            allPlayers.Sort();
+            allPlayers.Reverse();
+
+            lstBxRecords.ItemsSource = null;
+
+            lstBxRecords.ItemsSource = allPlayers;
         }
     }
 }

@@ -36,6 +36,8 @@ namespace BlackJack
         //list of all the current players
         List<Player> players = new List<Player>();
 
+        List<string> allPlayers = new List<string>();
+
         //bools for each instance of the game not being started correctley it will not start
         bool gameRestarted = true;
         bool gameInProgress = false;
@@ -59,58 +61,8 @@ namespace BlackJack
         {
             if (gameStarted == false)
             {
-                //message too show records being saved
-                MessageBox.Show("Saving too records file");
-
-                //foreach player in the list save their record too a list
-                foreach (Player newPlayer in players)
-                {
-                    //playerInFile = false;
-
-
-
-                    //foreach (Player player in players)
-                    //{
-                    //    if (newPlayer.PlayerName == player.PlayerName)
-                    //    {
-                    //        FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt", FileMode.Create, FileAccess.Write);
-
-
-                    //        StreamWriter sw = new StreamWriter(fs);
-
-                    //        sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws);
-                    //        playerInFile = true;
-                    //        sw.Close();
-
-                    //        return;
-
-                    //    }
-
-                    //}
-
-                    //if (playerInFile == false)
-                    //{
-                    FileStream fs = new FileStream(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
-
-
-                    StreamWriter sw = new StreamWriter(fs);
-
-                    sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3,-15} Date Last time player played: {4}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws, newPlayer.DateOfLastGame);
-
-                    sw.WriteLine("");
-
-                    sw.Close();
-                    //}
-
-
-
-                }
-                ReadFile();
+                Save();
                 MainWindow1.Close();
-            }
-            else
-            {
-                MessageBox.Show("Finish game before finishing");
             }
 
         }
@@ -269,6 +221,8 @@ namespace BlackJack
             txtBlWin.Text = "0";
             txtBlLosses.Text = "0";
 
+            RefreshRecords();
+
         }
 
         //if btn has been clicked
@@ -406,8 +360,9 @@ namespace BlackJack
                     newPlayer.Losses++;
                     MessageBox.Show("You Lose. You lost " + newPlayer.Losses + " games");
                     //players.Sort();
-                    RefreshRecords();
+                    
                     Restart();
+                    RefreshRecords();
                     txtBlLosses.Text = newPlayer.Losses.ToString();
                     return;
                 }
@@ -433,8 +388,9 @@ namespace BlackJack
                     newPlayer.Wins++;
                     MessageBox.Show("You won. You won " + newPlayer.Wins + " games");
                     //players.Sort();
-                    RefreshRecords();
+                    
                     Restart();
+                    RefreshRecords();
                     txtBlWin.Text = newPlayer.Wins.ToString();
                     return;
                 }
@@ -458,8 +414,9 @@ namespace BlackJack
                     newPlayer.Draws++;
                     MessageBox.Show("You Draw. You drew " + newPlayer.Draws + " games");
                     //players.Sort();
-                    RefreshRecords();
+                
                     Restart();
+                    RefreshRecords();
                     txtBlDraws.Text = newPlayer.Draws.ToString();
                     return;
 
@@ -472,11 +429,39 @@ namespace BlackJack
         //refreshes the records after a game
         public void RefreshRecords()
         {
+            Save();
+
+            FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
+
+            StreamReader sr = new StreamReader(fs);
+
+            string[] lines = new string[100];
+
+            string lineIn = sr.ReadLine();
+
+            for (int i = 0; i < 100; i++)
+            {
+                lines[i] = lineIn;
+
+                allPlayers.Remove(lines[i]);
+                lineIn = sr.ReadLine();
+            }
+
+            
+
+            foreach (string player in lines)
+            {
+                allPlayers.Add(player);
+            }
+
+            
+
+            allPlayers.Sort();
+            allPlayers.Reverse();
 
             lstBxRecords.ItemsSource = null;
 
-
-            lstBxRecords.ItemsSource = players;
+            lstBxRecords.ItemsSource = allPlayers;
 
         }
 
@@ -565,6 +550,141 @@ namespace BlackJack
             {
 
                 MessageBox.Show("Restart Game and press Start");
+            }
+        }
+
+        public void Save()
+        {
+            if (gameStarted == false)
+            {
+                //message too show records being saved
+                MessageBox.Show("Saving too records file");
+
+                //foreach player in the list save their record too a list
+                foreach (Player newPlayer in players)
+                {
+                    //playerInFile = false;
+
+
+
+                    //foreach (Player player in players)
+                    //{
+                    //    if (newPlayer.PlayerName == player.PlayerName)
+                    //    {
+                    //        FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt", FileMode.Create, FileAccess.Write);
+
+
+                    //        StreamWriter sw = new StreamWriter(fs);
+
+                    //        sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws);
+                    //        playerInFile = true;
+                    //        sw.Close();
+
+                    //        return;
+
+                    //    }
+
+                    //}
+
+                    //if (playerInFile == false)
+                    //{
+
+
+
+
+                    
+
+                    if (playerReturned == true)
+                    {
+                        FileStream fs1 = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
+
+                        StreamReader sr = new StreamReader(fs1);
+
+                        string x = txtBxEnterName.Text;
+
+                        foreach (Player player in players)
+                        {
+                            if (player.PlayerName == x)
+                            {
+                                MessageBox.Show("Inside If");
+                                string name = player.PlayerName;
+                                string[] lines = new string[100];
+                                bool found = false;
+
+                                string result = "Unknown";
+
+                                string searchName = string.Format(" {0,-15} Wins", name);
+
+                                string lineIn = sr.ReadLine();
+                                string[] fieldArray1 = new string[5];
+
+                                if (name == "")
+                                {
+                                    MessageBox.Show("Please enter name first");
+                                    return;
+                                }
+
+                                for (int i = 0; i < 100; i++)
+                                {
+                                    lines[i] = lineIn;
+                                    lineIn = sr.ReadLine();
+                                }
+
+                                for (int i = 0; i < lines.Length; i++)
+                                {
+                                    fieldArray1 = lines[i].Split(':');
+                                    string playerName = string.Format(fieldArray1[1]);
+                                    if (fieldArray1[1] == searchName)
+                                    {
+                                        result = string.Format(lines[i].ToString());
+
+                                        MessageBox.Show(result);
+                                        found = true;
+                                        break;
+                                    }
+
+
+                                }
+                                if (found == false)
+                                {
+                                    result = "Player not found";
+                                    MessageBox.Show(result);
+
+
+                                }
+                                found = false;
+
+
+                                sr.Close();
+                            }
+
+                        }
+                        }
+
+                    else
+                    {
+                        FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
+                        StreamWriter sw = new StreamWriter(fs);
+
+                        sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3,-15} Date Last time player played: {4}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws, newPlayer.DateOfLastGame);
+
+                        sw.Close();
+                    }
+
+                        
+
+                    
+                    //}
+
+
+
+                }
+                //ReadFile();
+                
+            }
+            else
+            {
+                MessageBox.Show("Finish game before finishing");
             }
         }
 
@@ -663,7 +783,7 @@ namespace BlackJack
 
         public void ReadFile()
         {
-            string text = File.ReadAllText(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt");
+            string text = File.ReadAllText(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt");
             text = text.Replace(string.Format("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", "Pierce", 1, 0, 0), "new value");
             File.WriteAllText("test.txt", text);
         }
@@ -671,14 +791,16 @@ namespace BlackJack
         private void btnSearchForRecord_Click(object sender, RoutedEventArgs e)
         {
             MainWindow window2 = new MainWindow();
-
             SearchRecordsWindow window = new SearchRecordsWindow();
 
-            window.Show();
+            Save();
 
+            window.Show();
             window2.Close();
 
             
         }
+
+        
     }
 }

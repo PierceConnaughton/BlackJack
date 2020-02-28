@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Card.cs" />
     <Compile Include="SearchRecordsWindow.xaml.cs">
       <DependentUpon>SearchRecordsWindow.xaml</DependentUpon>
     </Compile>
