@@ -31,7 +31,7 @@ namespace BlackJack
         string dealerNumString;
         string playerNumString;
 
-        
+
 
         //list of all the current players
         List<Player> players = new List<Player>();
@@ -90,12 +90,12 @@ namespace BlackJack
 
                     //if (playerInFile == false)
                     //{
-                    FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
+                    FileStream fs = new FileStream(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
 
 
                     StreamWriter sw = new StreamWriter(fs);
 
-                    sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3,-15} Date Last time player played: {4}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws,newPlayer.DateOfLastGame);
+                    sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3,-15} Date Last time player played: {4}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws, newPlayer.DateOfLastGame);
 
                     sw.WriteLine("");
 
@@ -460,7 +460,7 @@ namespace BlackJack
                     //players.Sort();
                     RefreshRecords();
                     Restart();
-                    txtBlDraws.Text = newPlayer.Draws.ToString();   
+                    txtBlDraws.Text = newPlayer.Draws.ToString();
                     return;
 
                 }
@@ -475,7 +475,7 @@ namespace BlackJack
 
             lstBxRecords.ItemsSource = null;
 
-           
+
             lstBxRecords.ItemsSource = players;
 
         }
@@ -663,13 +663,22 @@ namespace BlackJack
 
         public void ReadFile()
         {
-            string text = File.ReadAllText(@"H:\Year Two\Semester 4\Programming\Project\PlayerRecords.txt");
-            text = text.Replace(string.Format("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}","Pierce",1,0,0), "new value");
+            string text = File.ReadAllText(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt");
+            text = text.Replace(string.Format("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", "Pierce", 1, 0, 0), "new value");
             File.WriteAllText("test.txt", text);
         }
 
-        
+        private void btnSearchForRecord_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow window2 = new MainWindow();
 
+            SearchRecordsWindow window = new SearchRecordsWindow();
 
+            window.Show();
+
+            window2.Close();
+
+            
+        }
     }
 }

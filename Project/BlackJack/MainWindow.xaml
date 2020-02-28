@@ -39,7 +39,7 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Player Records" VerticalAlignment="Top" Margin="292,77,0,0" FontSize="22" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Current Player:" VerticalAlignment="Top" Margin="292,31,0,0" Grid.Column="1"/>
         <TextBlock x:Name="txtBlCurrentPlayer" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="385,31,0,0" Grid.Column="1"/>
-        <Button Content="Search For Record" HorizontalAlignment="Left" VerticalAlignment="Top" Width="271" Margin="292,377,0,0" Grid.Column="1"/>
+        <Button x:Name="btnSearchForRecord" Content="Search For Record" HorizontalAlignment="Left" VerticalAlignment="Top" Width="271" Margin="292,377,0,0" Grid.Column="1" Click="btnSearchForRecord_Click"/>
 
 
     </Grid>
