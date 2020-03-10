@@ -3,71 +3,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+
+
 
 namespace BlackJack
 {
     public enum CardNumber
     {
-        Ace = 1,
-        Two = 2,
-        Three = 3,
-        Four = 4,
-        Five = 5,
-        Six = 6,
-        Seven = 7,
-        Eight = 8,
-        Nine = 9,
-        Ten = 10,
-        Jack = 10,
-        Queen = 10,
-        King = 11
+        ace = 1,
+        two = 2,
+        three = 3,
+        four = 4,
+        five = 5,
+        six = 6,
+        seven = 7,
+        eight = 8,
+        nine = 9,
+        ten = 10,
+        jack = 11,
+        queen = 12,
+        king = 13
     }
 
     public enum CardSuit
     {
-        Hearts = 1,
-        Clubs = 2,
-        Spades = 3,
-        Diamond = 4
+        hearts = 1,
+        clubs = 2,
+        spades = 3,
+        diamond = 4
     }
-    class Card
+    public class Card
     {
-        CardNumber cardNumber;
-        CardSuit cardSuit;
 
-        public CardNumber cardNumberVar
-        {
-            get
-            {
-                return this.cardNumber;
-            }
-            set
-            {
-                this.cardNumber = value;
-            }
-        }
+        Random rnd = new Random();
 
-        public CardNumber cardSuitVar
-        {
-            get
-            {
-                return this.cardSuitVar;
-            }
-            set
-            {
-                this.cardSuitVar = value;
-            }
-        }
+        public CardNumber cardNumberVar { get; set; }
 
+        public CardSuit cardSuitVar { get; set; }
+
+       Image cardImage { get; }
+
+        
         public Card()
         {
-            cardSuit = 0;
-            cardNumber = 0;
+            cardNumberVar = 0;
+            cardSuitVar = 0;
+            cardImage = null;
         }
+
+        
 
         public override string ToString()
         {
-            return string.Format(cardSuit.ToString());
+            return string.Format("{0} of {1}",cardNumberVar.ToString(),cardSuitVar.ToString());
         }
     }
 }

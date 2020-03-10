@@ -21,17 +21,28 @@ namespace BlackJack
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        //creates the deck
+        Deck deck;
+
+        //creates the players hand
+        Hand playerHand;
+        //creates the dealers hand
+        Hand dealerHand;
+
+        //creates the sum of the cards for both the dealer and the player
+        int dealerSum;
+        int playerSum;
+
         //create a random num
         Random rnd = new Random();
 
-        //properties for player's Card number and the dealer's card nu8mber
-        int playerNum = 0;
-        int dealerNum = 0;
+        string dealerSumString;
+        string playerSumString;
 
-        string dealerNumString;
-        string playerNumString;
-
-
+        string[] suits = new string[4] { "spades", "clubs", "hearts", "diamonds" };
+        string[] faces = new string[13] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace" };
+        //List<string> deck = new List<string>();
 
         //list of all the current players
         List<Player> players = new List<Player>();
@@ -47,7 +58,9 @@ namespace BlackJack
         bool playerInFile = false;
         bool ifHit = false;
 
+        //Image image;
 
+        
 
 
 
@@ -84,26 +97,59 @@ namespace BlackJack
                     gameStarted = true;
 
                     playerFound = false;
-                    //get random cards between 2 and 21
-                    int firstCard = rnd.Next(1, 11);
-                    int secondCard = rnd.Next(1, 12);
 
-                    //get dealers first card and show it
-                    int dealerFirstCard = rnd.Next(1, 11);
+                    //Card card1 = new Card();
+                    //Card card2 = new Card();
 
-                    //add players first too cards and turn them into a string too display
-                    playerNum = firstCard + secondCard;
+                    //Card dealerCard = new Card();
 
-                    playerNumString = playerNum.ToString();
+                    //int cardNumber1 = (int)card1.cardNumberVar;
+                    //if (cardNumber1 > 11)
+                    //{
+                    //    cardNumber1 = 11;
+                    //}
 
-                    txtBlPlayerTotal.Text = playerNumString;
+                    //int cardNumber2 = (int)card2.cardNumberVar;
+                    //if (cardNumber2 > 10)
+                    //{
+                    //    cardNumber2 = 10;
+                    //}
+                    deck = new Deck();
 
-                    //show dealers first card as a string
-                    dealerNum = dealerFirstCard;
+                    //creates the players hand
+                    Hand playerHand = new Hand(deck);
+                    //creates the dealers hand
+                    Hand dealerHand = new Hand(deck);
 
-                    dealerNumString = dealerNum.ToString();
 
-                    txtBlDealerTotal.Text = dealerNumString;
+                    //for first cards weather it be 2 for player and 1 for dealer depending
+                    for (int i = 0; i < 2; i++)
+                    {
+                        
+                        playerSum = playerHand.AddValue(deck.DrawCard(playerHand)  , playerSum);
+                    }
+
+                    dealerSum = dealerHand.AddValue(deck.DrawCard(dealerHand), dealerSum);
+
+
+                    ////add players first two cards and turn them into a string too display
+                    //playerNum = cardNumber1 + cardNumber2;
+
+
+                    playerSumString = playerSum.ToString();
+
+                    txtBlPlayerTotal.Text = playerSumString;
+
+                    ////show dealers first card as a string
+                    //dealerNum = (int)dealerCard.cardNumberVar;
+                    //if (dealerNum > 11)
+                    //{
+                    //    dealerNum = 11;
+                    //}
+
+                    dealerSumString = dealerSum.ToString();
+
+                    txtBlDealerTotal.Text = dealerSumString;
 
                     //check if player is a returning one
                     foreach (Player returningPlayer in players)
@@ -145,7 +191,7 @@ namespace BlackJack
                             {
 
                                 //if the player num is equal too 21 they win
-                                if (playerNum == 21)
+                                if (playerSum == 21)
                                 {
 
                                     Win();
@@ -182,7 +228,7 @@ namespace BlackJack
 
                             if (x == currentPlayer.PlayerName)
                             {
-                                if (playerNum == 21)
+                                if (playerSum == 21)
                                 {
 
                                     Win();
@@ -221,9 +267,25 @@ namespace BlackJack
             txtBlWin.Text = "0";
             txtBlLosses.Text = "0";
 
+            ////Create Deck   
+            //foreach (string suit in suits)
+            //{
+            //    foreach (string face in faces)
+            //    {
+            //        deck.(string.Format("{0} of {1}", face, suit));
+            //    }   
+            //}
+
+            //foreach (string x in deck)
+            //{
+            //    MessageBox.Show(x);
+            //}
+
             RefreshRecords();
 
         }
+
+        
 
         //if btn has been clicked
         private void btnHitMe_Click(object sender, RoutedEventArgs e)
@@ -256,19 +318,27 @@ namespace BlackJack
 
                             ifHit = true;
                             //get random card between 1 and 10 and add it too your total
-                            int hit = rnd.Next(1, 11);
+                            Card HitCard = new Card();
 
-                            playerNum = playerNum + hit;
 
-                            txtBlPlayerTotal.Text = playerNum.ToString();
+                            //int hit = (int)HitCard.cardNumberVar;
+                            //if (hit > 10)
+                            //{
+                            //    hit = 10;
+                            //}
+                            playerHand = new Hand(deck);
+
+                            playerSum = playerHand.AddValue(deck.DrawCard(playerHand), playerSum);
+
+                            txtBlPlayerTotal.Text = playerSum.ToString();
 
                             //if player gets more then 21 they lose or if player gets exactly 21 they win
-                            if (playerNum > 21)
+                            if (playerSum > 21)
                             {
                                 Loss();
                                 return;
                             }
-                            else if (playerNum == 21)
+                            else if (playerSum == 21)
                             {
                                 Win();
                                 return;
@@ -459,9 +529,7 @@ namespace BlackJack
             allPlayers.Sort();
             allPlayers.Reverse();
 
-            lstBxRecords.ItemsSource = null;
-
-            lstBxRecords.ItemsSource = allPlayers;
+            sr.Close();
 
         }
 
@@ -482,8 +550,8 @@ namespace BlackJack
             playerReturned = false;
             ifHit = false;
 
-            playerNum = 0;
-            dealerNum = 0;
+            playerSum = 0;
+            dealerSum = 0;
 
 
 
@@ -516,18 +584,25 @@ namespace BlackJack
                         if (newPlayer.PlayerName == x)
                         {
                             playerFound = true;
-                            int doubleDown = rnd.Next(1, 11);
+                            //Card doubleDown = new Card();
 
-                            playerNum = playerNum + doubleDown;
+                            //int doubleDownNum = (int)doubleDown.cardNumberVar;
+                            //if (doubleDownNum > 10)
+                            //{
+                            //    doubleDownNum = 10;
+                            //}
 
-                            txtBlPlayerTotal.Text = playerNum.ToString();
+                            playerSum = playerHand.AddValue(deck.DrawCard(playerHand), playerSum);
+                            playerSum = playerHand.AddValue(deck.DrawCard(playerHand), playerSum);
 
-                            if (playerNum > 21)
+                            txtBlPlayerTotal.Text = playerSum.ToString();
+
+                            if (playerSum > 21)
                             {
                                 Loss();
                                 return;
                             }
-                            else if (playerNum == 21)
+                            else if (playerSum == 21)
                             {
                                 Win();
                                 return;
@@ -558,7 +633,7 @@ namespace BlackJack
             if (gameStarted == false)
             {
                 //message too show records being saved
-                MessageBox.Show("Saving too records file");
+               
 
                 //foreach player in the list save their record too a list
                 foreach (Player newPlayer in players)
@@ -659,16 +734,16 @@ namespace BlackJack
                             }
 
                         }
-                        }
+                    }
 
-                    else
+                    else if(playerReturned != true)
                     {
                         FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
                         StreamWriter sw = new StreamWriter(fs);
 
                         sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3,-15} Date Last time player played: {4}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws, newPlayer.DateOfLastGame);
 
-                        sw.Close();
+                       sw.Close();
                     }
 
                         
@@ -691,60 +766,73 @@ namespace BlackJack
         //Method for when it's the dealers turn
         public void Dealer()
         {
-            //get dealers second card
-            int dealerCard = rnd.Next(1, 11);
 
+            //Card dealerCard = new Card();
+            ////get dealers second card
+            //int dealerCardNum = (int)dealerCard.cardNumberVar;
+            //if (dealerCardNum > 10)
+            //{
+            //    dealerCardNum = 10;
+            //}
             //get dealer total and display it
-            dealerNum = dealerNum + dealerCard;
 
-            dealerNumString = dealerNum.ToString();
-            txtBlDealerTotal.Text = dealerNumString;
+            dealerHand = new Hand(deck);
+
+            dealerSum = dealerHand.AddValue(deck.DrawCard(dealerHand), dealerSum);
+
+            dealerSumString = dealerSum.ToString();
+            txtBlDealerTotal.Text = dealerSumString;
 
             //if dealer has exactly 21 you lose
-            if (dealerNum == 21)
+            if (dealerSum == 21)
             {
                 Loss();
                 return;
             }
 
             //if dealer's number is below 21
-            else if (dealerNum < 21)
+            else if (dealerSum < 21)
             {
                 //go through loop 10 times
                 for (int i = 0; i < 10; i++)
                 {
                     //if dealer number more then player number and dealer number less then or equal to 21 you lose
-                    if (dealerNum > playerNum && dealerNum <= 21)
+                    if (dealerSum > playerSum && dealerSum <= 21)
                     {
                         Loss();
                         return;
                     }
 
                     //if dealer number below 21 and also below the player's number
-                    else if (dealerNum <= 21 && dealerNum < playerNum)
+                    else if (dealerSum <= 21 && dealerSum < playerSum)
                     {
+                        Card newCard = new Card();
                         //give dealer a new card and add it too total
-                        int newCard = rnd.Next(1, 11);
+                        int newCardNum = (int)newCard.cardNumberVar;
+                        if (newCardNum > 10)
+                        {
+                            newCardNum = 10;
+                        }
 
-                        dealerNum = dealerNum + newCard;
+                        dealerSum = dealerHand.AddValue(deck.DrawCard(dealerHand), dealerSum);
 
-                        dealerNumString = dealerNum.ToString();
-                        txtBlDealerTotal.Text = dealerNumString;
+                        dealerSumString = dealerSum.ToString();
+                        txtBlDealerTotal.Text = dealerSumString;
 
                         //if dealer number = too 21 and equal too player number it's a draw
-                        if (dealerNum == 21 && dealerNum == playerNum)
+                        if (dealerSum == 21 && dealerSum == playerSum)
                         {
                             Draw();
                             return;
                         }
                         //if dealer number = to 21 and more then player number you lose
-                        else if (dealerNum == 21 && dealerNum > playerNum)
+                        else if (dealerSum == 21 && dealerSum > playerSum)
                         {
                             Loss();
                             return;
                         }
                         //if dealer number more then 21 you win
-                        else if (dealerNum > 21)
+                        else if (dealerSum > 21)
                         {
                             Win();
                             return;
@@ -752,25 +840,25 @@ namespace BlackJack
                     }
 
                     //if dealer number less than = 21 and less then player num 
-                    else if (dealerNum <= 21 && dealerNum < playerNum)
+                    else if (dealerSum <= 21 && dealerSum < playerSum)
                     {
                         Win();
                         return;
                     }
                     //if dealer number == player number its a draw
-                    else if (dealerNum == playerNum)
+                    else if (dealerSum == playerSum)
                     {
                         Draw();
                         return;
                     }
                     //else if dealer num is more than player num
-                    else if (dealerNum > playerNum)
+                    else if (dealerSum > playerSum)
                     {
                         Loss();
                         return;
                     }
                     //if dealer number is more than 21
-                    else if (dealerNum > 21)
+                    else if (dealerSum > 21)
                     {
                         Win();
                         return;
@@ -781,12 +869,12 @@ namespace BlackJack
             }
         }
 
-        public void ReadFile()
-        {
-            string text = File.ReadAllText(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt");
-            text = text.Replace(string.Format("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", "Pierce", 1, 0, 0), "new value");
-            File.WriteAllText("test.txt", text);
-        }
+        //public void ReadFile()
+        //{
+        //    string text = File.ReadAllText(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt");
+        //    text = text.Replace(string.Format("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", "Pierce", 1, 0, 0), "new value");
+        //    File.WriteAllText("test.txt", text);
+        //}
 
         private void btnSearchForRecord_Click(object sender, RoutedEventArgs e)
         {
@@ -797,8 +885,6 @@ namespace BlackJack
 
             window.Show();
             window2.Close();
-
-            
         }
 
         
