@@ -35,28 +35,122 @@ namespace BlackJack
     }
     public class Card
     {
+        #region Properties
+
+        Image image;
+        CardNumber cardNumber;
+        CardSuit cardSuit;
 
         Random rnd = new Random();
 
-        public CardNumber cardNumberVar { get; set; }
-
-        public CardSuit cardSuitVar { get; set; }
-
-       Image cardImage { get; }
+        
 
         
+        public CardNumber cardNumberVar {
+            get
+            {
+                return this.cardNumber;
+            }
+            set
+            {
+                this.cardNumber = value;
+                GetImage();
+            }
+        }
+
+        public CardSuit cardSuitVar
+        {
+            get
+            {
+                return this.cardSuit;
+            }
+            set
+            {
+                this.cardSuit = value;
+                GetImage();
+            }
+        }
+            
+
+       Image cardImage {
+            get
+            {
+                return this.image;
+            }
+        }
+
+        #endregion Properies
+
+        #region Constructors
         public Card()
         {
-            cardNumberVar = 0;
-            cardSuitVar = 0;
-            cardImage = null;
+            cardNumber = 0;
+            cardSuit = 0;
+            image = null;
         }
 
-        
+        public Card(CardNumber cardnumber, CardSuit cardsuit)
+        {
+            cardSuit = cardsuit;
+            cardNumber = cardnumber;
+        }
 
+        #endregion Constructors
+
+        #region Methods
         public override string ToString()
         {
+            //return the card num and card suit
             return string.Format("{0} of {1}",cardNumberVar.ToString(),cardSuitVar.ToString());
         }
+
+        private void GetImage()
+        {
+            if (this.cardSuit != 0 && this.cardNumber != 0)//so it must be a valid card (see the Enums)
+            {
+                //starting point from the left
+                int x = 0;
+                //starting point from the top. Can be 0, 98, 196 and 294
+                int y = 0;
+
+                int height = 97;
+                int width = 73;
+
+                switch (this.cardSuit)
+                {
+                    case CardSuit.hearts:
+                        y = 196;
+                        break;
+                    case CardSuit.spades:
+                        y = 98;
+                        break;
+                    case CardSuit.clubs:
+                        y = 0;
+                        break;
+                    case CardSuit.diamond:
+                        y = 294;
+                        break;
+                }
+
+                x = width * ((int)this.cardNumber - 1);
+               
+               
+
+              //D:\College\Programming\BlackJack - master\Project\PlayerRecords.txt
+              Bitmap source = new Bitmap(@"C:\Users\Pierce\OneDrive\College\Semester 4\Programming\Project\Project\BlackJack\Images\cards.png");//the original cards.png image
+                Bitmap img = new Bitmap(width, height);
+                Graphics g = Graphics.FromImage(img);
+                g.DrawImage(source, new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);//here we slice the original into pieces
+                g.Dispose();
+                this.image = img;
+            }
+        }
+
+        public Image DisplayImage()
+        {
+            return cardImage;
+        }
+
+        #endregion Methods
     }
 }

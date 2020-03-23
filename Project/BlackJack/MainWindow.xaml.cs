@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Drawing;
+
 
 namespace BlackJack
 {
@@ -58,8 +60,8 @@ namespace BlackJack
         bool playerInFile = false;
         bool ifHit = false;
 
-        //Image image;
 
+        BitmapImage userImage;
         
 
 
@@ -84,7 +86,7 @@ namespace BlackJack
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             //check if the game has been restarted to 0
-            if (gameRestarted == true)
+            if (gameRestarted == true && gameStarted == false)
             {
                 //check if anything is in text box
                 if (String.IsNullOrEmpty(txtBxEnterName.Text))
@@ -121,15 +123,19 @@ namespace BlackJack
                     //creates the dealers hand
                     Hand dealerHand = new Hand(deck);
 
+                    Card firstCard = deck.DrawCard(playerHand);
+                    Card secondCard = deck.DrawCard(playerHand);
 
-                    //for first cards weather it be 2 for player and 1 for dealer depending
-                    for (int i = 0; i < 2; i++)
-                    {
-                        
-                        playerSum = playerHand.AddValue(deck.DrawCard(playerHand)  , playerSum);
-                    }
 
-                    dealerSum = dealerHand.AddValue(deck.DrawCard(dealerHand), dealerSum);
+                    int firstCardNum = playerHand.AddValue(firstCard, playerSum);
+                    int secondCardNum = playerHand.AddValue(secondCard,playerSum);
+
+                    playerSum = firstCardNum + secondCardNum;
+
+                    
+                    
+                    Card dealerCard = deck.DrawCard(dealerHand);
+                    dealerSum = dealerHand.AddValue(dealerCard,dealerSum);
 
 
                     ////add players first two cards and turn them into a string too display
@@ -137,6 +143,8 @@ namespace BlackJack
 
 
                     playerSumString = playerSum.ToString();
+
+                    ImgUserCard.Source = new Bitmap(secondCard.DisplayImage());
 
                     txtBlPlayerTotal.Text = playerSumString;
 
@@ -150,6 +158,8 @@ namespace BlackJack
                     dealerSumString = dealerSum.ToString();
 
                     txtBlDealerTotal.Text = dealerSumString;
+
+                    
 
                     //check if player is a returning one
                     foreach (Player returningPlayer in players)
@@ -330,6 +340,8 @@ namespace BlackJack
 
                             playerSum = playerHand.AddValue(deck.DrawCard(playerHand), playerSum);
 
+                            
+
                             txtBlPlayerTotal.Text = playerSum.ToString();
 
                             //if player gets more then 21 they lose or if player gets exactly 21 they win
@@ -501,7 +513,7 @@ namespace BlackJack
         {
             Save();
 
-            FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
+            FileStream fs = new FileStream(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
 
             StreamReader sr = new StreamReader(fs);
 
@@ -671,7 +683,7 @@ namespace BlackJack
 
                     if (playerReturned == true)
                     {
-                        FileStream fs1 = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
+                        FileStream fs1 = new FileStream(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt", FileMode.Open, FileAccess.Read);
 
                         StreamReader sr = new StreamReader(fs1);
 
@@ -738,7 +750,7 @@ namespace BlackJack
 
                     else if(playerReturned != true)
                     {
-                        FileStream fs = new FileStream(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
+                        FileStream fs = new FileStream(@"D:\College\Programming\BlackJack-master\Project\PlayerRecords.txt", FileMode.Append, FileAccess.Write);
                         StreamWriter sw = new StreamWriter(fs);
 
                         sw.WriteLine("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3,-15} Date Last time player played: {4}", newPlayer.PlayerName, newPlayer.Wins, newPlayer.Losses, newPlayer.Draws, newPlayer.DateOfLastGame);
