@@ -12,9 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
-using System.Drawing;
 
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace BlackJack
 {
@@ -42,8 +43,7 @@ namespace BlackJack
         string dealerSumString;
         string playerSumString;
 
-        string[] suits = new string[4] { "spades", "clubs", "hearts", "diamonds" };
-        string[] faces = new string[13] { "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace" };
+        
         //List<string> deck = new List<string>();
 
         //list of all the current players
@@ -57,11 +57,11 @@ namespace BlackJack
         bool playerReturned = false;
         bool gameStarted = false;
         bool playerFound = false;
-        bool playerInFile = false;
+        
         bool ifHit = false;
 
 
-        BitmapImage userImage;
+        
         
 
 
@@ -100,28 +100,12 @@ namespace BlackJack
 
                     playerFound = false;
 
-                    //Card card1 = new Card();
-                    //Card card2 = new Card();
-
-                    //Card dealerCard = new Card();
-
-                    //int cardNumber1 = (int)card1.cardNumberVar;
-                    //if (cardNumber1 > 11)
-                    //{
-                    //    cardNumber1 = 11;
-                    //}
-
-                    //int cardNumber2 = (int)card2.cardNumberVar;
-                    //if (cardNumber2 > 10)
-                    //{
-                    //    cardNumber2 = 10;
-                    //}
                     deck = new Deck();
 
+                    #region PlayerHand
                     //creates the players hand
                     Hand playerHand = new Hand(deck);
-                    //creates the dealers hand
-                    Hand dealerHand = new Hand(deck);
+                    
 
                     Card firstCard = deck.DrawCard(playerHand);
                     Card secondCard = deck.DrawCard(playerHand);
@@ -132,34 +116,42 @@ namespace BlackJack
 
                     playerSum = firstCardNum + secondCardNum;
 
-                    
-                    
-                    Card dealerCard = deck.DrawCard(dealerHand);
-                    dealerSum = dealerHand.AddValue(dealerCard,dealerSum);
-
-
-                    ////add players first two cards and turn them into a string too display
-                    //playerNum = cardNumber1 + cardNumber2;
-
-
                     playerSumString = playerSum.ToString();
-
-                    ImgUserCard.Source = new Bitmap(secondCard.DisplayImage());
 
                     txtBlPlayerTotal.Text = playerSumString;
 
-                    ////show dealers first card as a string
-                    //dealerNum = (int)dealerCard.cardNumberVar;
-                    //if (dealerNum > 11)
-                    //{
-                    //    dealerNum = 11;
-                    //}
+                    BitmapImage userFirstbitmapImage = Convert(firstCard.ReturnImage());
+
+                    ImgUserFirstCard.Source = userFirstbitmapImage;
+
+                    BitmapImage userSecondbitmapImage = Convert(secondCard.ReturnImage());
+
+                    ImgUserSecondCard.Source = userSecondbitmapImage;
+
+                    #endregion PlayerHand
+
+
+                    #region DealerHand
+                    //creates the dealers hand
+                    Hand dealerHand = new Hand(deck);
+
+                    Card dealerCard = deck.DrawCard(dealerHand);
+
+                    dealerSum = dealerHand.AddValue(dealerCard,dealerSum);
+
+                    
 
                     dealerSumString = dealerSum.ToString();
 
                     txtBlDealerTotal.Text = dealerSumString;
 
-                    
+                    BitmapImage dealerbitmapImage = Convert(dealerCard.ReturnImage());
+
+                    ImgDealerFirstCard.Source = dealerbitmapImage;
+
+                    #endregion DealerHand
+
+
 
                     //check if player is a returning one
                     foreach (Player returningPlayer in players)
@@ -262,10 +254,26 @@ namespace BlackJack
                 MessageBox.Show("Restart Game and press start");
             }
 
-
-
-
         }
+
+        public BitmapImage Convert(System.Drawing.Image img)
+        {
+            using (var memory = new MemoryStream())
+            {
+                img.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+
+                return bitmapImage;
+            }
+        }
+
+
         //on window load
         private void MainWindow1_Loaded(object sender, RoutedEventArgs e)
         {
@@ -328,21 +336,41 @@ namespace BlackJack
 
                             ifHit = true;
                             //get random card between 1 and 10 and add it too your total
-                            Card HitCard = new Card();
-
-
-                            //int hit = (int)HitCard.cardNumberVar;
-                            //if (hit > 10)
-                            //{
-                            //    hit = 10;
-                            //}
                             playerHand = new Hand(deck);
 
-                            playerSum = playerHand.AddValue(deck.DrawCard(playerHand), playerSum);
-
+                            Card HitCard = deck.DrawCard(playerHand);
                             
+                            int HitCardNum = playerHand.AddValue(HitCard, playerSum);
 
-                            txtBlPlayerTotal.Text = playerSum.ToString();
+
+                            playerSum = HitCardNum;
+
+                            playerSumString = playerSum.ToString();
+
+                            txtBlPlayerTotal.Text = playerSumString;
+
+                            BitmapImage userHitbitmapImage = Convert(HitCard.ReturnImage());
+
+                            if (ImgUserThirdCard.Source ==  null)
+                            {
+                                ImgUserThirdCard.Source = userHitbitmapImage;
+                            }
+
+                            else if (ImgUserFourthCard.Source == null)
+                            {
+                                ImgUserFourthCard.Source = userHitbitmapImage;
+                            }
+
+                            else if (ImgUserFifthCard.Source == null)
+                            {
+                                ImgUserFifthCard.Source = userHitbitmapImage;
+                            }
+
+                            else
+                            {
+                                ImgUserFirstCard.Source = userHitbitmapImage;
+                            }
+                                 
 
                             //if player gets more then 21 they lose or if player gets exactly 21 they win
                             if (playerSum > 21)
@@ -569,6 +597,18 @@ namespace BlackJack
 
             txtBlDealerTotal.Text = "0";
             txtBlPlayerTotal.Text = "0";
+
+            ImgUserFirstCard.Source = null;
+            ImgUserSecondCard.Source = null;
+            ImgUserThirdCard.Source = null;
+            ImgUserFourthCard.Source = null;
+            ImgUserFifthCard.Source = null;
+            
+            ImgDealerFirstCard.Source = null;
+            ImgDealerSecondCard.Source = null;
+            ImgDealerThirdCard.Source = null;
+            ImgDealerFourthCard.Source = null;
+            ImgDealerFifthCard.Source = null;
         }
 
         //When double down is clicked
@@ -596,18 +636,30 @@ namespace BlackJack
                         if (newPlayer.PlayerName == x)
                         {
                             playerFound = true;
-                            //Card doubleDown = new Card();
 
-                            //int doubleDownNum = (int)doubleDown.cardNumberVar;
-                            //if (doubleDownNum > 10)
-                            //{
-                            //    doubleDownNum = 10;
-                            //}
 
-                            playerSum = playerHand.AddValue(deck.DrawCard(playerHand), playerSum);
-                            playerSum = playerHand.AddValue(deck.DrawCard(playerHand), playerSum);
+                            playerHand = new Hand(deck);
 
-                            txtBlPlayerTotal.Text = playerSum.ToString();
+                            Card firstCard = deck.DrawCard(playerHand);
+                            Card secondCard = deck.DrawCard(playerHand);
+
+                            int firstCardNum = playerHand.AddValue(firstCard, playerSum);
+                            int secondCardNum = playerHand.AddValue(secondCard, playerSum);
+
+
+                            playerSum = firstCardNum + secondCardNum;
+
+                            playerSumString = playerSum.ToString();
+
+                            txtBlPlayerTotal.Text = playerSumString;
+
+                            BitmapImage userFirstbitmapImage = Convert(firstCard.ReturnImage());
+                            BitmapImage userSecondbitmapImage = Convert(secondCard.ReturnImage());
+
+                            ImgUserThirdCard.Source = userFirstbitmapImage;
+                            ImgUserFourthCard.Source = userSecondbitmapImage;
+
+                            
 
                             if (playerSum > 21)
                             {
@@ -779,21 +831,27 @@ namespace BlackJack
         public void Dealer()
         {
 
-            //Card dealerCard = new Card();
-            ////get dealers second card
-            //int dealerCardNum = (int)dealerCard.cardNumberVar;
-            //if (dealerCardNum > 10)
-            //{
-            //    dealerCardNum = 10;
-            //}
-            //get dealer total and display it
+            
 
             dealerHand = new Hand(deck);
 
-            dealerSum = dealerHand.AddValue(deck.DrawCard(dealerHand), dealerSum);
+            Card firstCard = deck.DrawCard(dealerHand);
+            
+            int firstCardNum = dealerHand.AddValue(firstCard, dealerSum);
+
+
+
+            dealerSum = firstCardNum;
 
             dealerSumString = dealerSum.ToString();
+
             txtBlDealerTotal.Text = dealerSumString;
+
+            BitmapImage userFirstbitmapImage = Convert(firstCard.ReturnImage());
+            
+
+           ImgDealerSecondCard.Source = userFirstbitmapImage;
+           
 
             //if dealer has exactly 21 you lose
             if (dealerSum == 21)
@@ -818,18 +876,41 @@ namespace BlackJack
                     //if dealer number below 21 and also below the player's number
                     else if (dealerSum <= 21 && dealerSum < playerSum)
                     {
-                        Card newCard = new Card();
-                        //give dealer a new card and add it too total
-                        int newCardNum = (int)newCard.cardNumberVar;
-                        if (newCardNum > 10)
-                        {
-                            newCardNum = 10;
-                        }
+                        Card newCard = deck.DrawCard(dealerHand);
 
-                        dealerSum = dealerHand.AddValue(deck.DrawCard(dealerHand), dealerSum);
+                        int newCardNum = dealerHand.AddValue(newCard, dealerSum);
+                        
+
+                        dealerSum = newCardNum;
 
                         dealerSumString = dealerSum.ToString();
+
                         txtBlDealerTotal.Text = dealerSumString;
+
+                        BitmapImage dealerNewCardbitmapImage = Convert(newCard.ReturnImage());
+
+                        if (ImgDealerThirdCard.Source == null)
+                        {
+                            ImgDealerThirdCard.Source = dealerNewCardbitmapImage;
+                        }
+
+                        else if (ImgDealerFourthCard.Source == null)
+                        {
+                            ImgDealerFourthCard.Source = dealerNewCardbitmapImage;
+                        }
+
+                        else if (ImgDealerFifthCard.Source == null)
+                        {
+                            ImgDealerFifthCard.Source = dealerNewCardbitmapImage;
+                        }
+
+                        else
+                        {
+                            ImgDealerFirstCard.Source = dealerNewCardbitmapImage;
+                        }
+
+
+
 
                         //if dealer number = too 21 and equal too player number it's a draw
                         if (dealerSum == 21 && dealerSum == playerSum)
@@ -881,13 +962,7 @@ namespace BlackJack
             }
         }
 
-        //public void ReadFile()
-        //{
-        //    string text = File.ReadAllText(@"H:\Year Two\Semester 4\Programming\Project\Project\PlayerRecords.txt");
-        //    text = text.Replace(string.Format("Player Name: {0,-15} Wins: {1,-15} Losses: {2,-15} Draws: {3}", "Pierce", 1, 0, 0), "new value");
-        //    File.WriteAllText("test.txt", text);
-        //}
-
+       
         private void btnSearchForRecord_Click(object sender, RoutedEventArgs e)
         {
             MainWindow window2 = new MainWindow();

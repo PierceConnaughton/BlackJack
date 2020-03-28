@@ -3,7 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+
 
 
 
@@ -37,7 +50,7 @@ namespace BlackJack
     {
         #region Properties
 
-        Image image;
+        Bitmap image;
         CardNumber cardNumber;
         CardSuit cardSuit;
 
@@ -72,7 +85,7 @@ namespace BlackJack
         }
             
 
-       Image cardImage {
+       Bitmap cardImage {
             get
             {
                 return this.image;
@@ -133,24 +146,38 @@ namespace BlackJack
                 }
 
                 x = width * ((int)this.cardNumber - 1);
-               
-               
 
-              //D:\College\Programming\BlackJack - master\Project\PlayerRecords.txt
-              Bitmap source = new Bitmap(@"C:\Users\Pierce\OneDrive\College\Semester 4\Programming\Project\Project\BlackJack\Images\cards.png");//the original cards.png image
-                Bitmap img = new Bitmap(width, height);
+
+                //gets the big image of cards
+                Bitmap source = new Bitmap(@"D:\College\Programming\ImageConversion-master\WpfApp1\cards.png");
+                //sets the width and height of the card
+                Bitmap img = new Bitmap(width, height);//this will be the created one for each card
+                //Create graphics from the current card that can be used too edit
                 Graphics g = Graphics.FromImage(img);
-                g.DrawImage(source, new Rectangle(0, 0, width, height), new Rectangle(x, y, width, height), GraphicsUnit.Pixel);//here we slice the original into pieces
+                //from the big card cut out the card you want from the selected height and width from all cards have and from the x axis and y axis we set earlier too find the card we want
+                //and we use pixels as our measure of units
+                g.DrawImage(source, new System.Drawing.Rectangle(0, 0, width, height), new System.Drawing.Rectangle(x, y, width, height), GraphicsUnit.Pixel);
+                //gets rid of the resources we used
                 g.Dispose();
+                //set the image we created as the image for this card
                 this.image = img;
+
+
+
+
+
+
+
             }
         }
 
-        public Image DisplayImage()
+        public Bitmap ReturnImage()
         {
-            return cardImage;
+            return image;
         }
 
+        
         #endregion Methods
+
     }
 }

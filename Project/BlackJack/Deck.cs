@@ -65,5 +65,6 @@ namespace BlackJack
             return drawn;
         }
         #endregion Methods
+
     }
 }
